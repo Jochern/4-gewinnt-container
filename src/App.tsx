@@ -223,6 +223,7 @@ const defaultTheme = createTheme({
   },
 });
 
+
 function App() {
   const [gamefield, setGamefield] = useState([
     [' ', ' ', ' ', ' ', ' ', ' ', ' '],
@@ -234,42 +235,56 @@ function App() {
   ]);
 
   const buttonStyle = {
-    width: '80px', // Ändere die Breite nach Bedarf
-    height: '60px', // Ändere die Höhe nach Bedarf
+    width: '80px',
+    height: '60px',
     backgroundColor: 'white',
   };
+
   const buttonStyle1 = {
-    width: '80px', // Ändere die Breite nach Bedarf
-    height: '60px', // Ändere die Höhe nach Bedarf
+    width: '80px',
+    height: '60px',
   };
 
   const buttonStyleW = {
-    width: '80px', // Ändere die Breite nach Bedarf
-    height: '60px', // Ändere die Höhe nach Bedarf
-    backgroundColor: 'yellow',
+    width: '80px',
+    height: '60px',
+    backgroundColor: 'Green',
   };
 
- function setGamefieldAndWinnerStatus() {
+  const buttonStyleR = {
+    width: '80px',
+    height: '60px',
+    backgroundColor: 'Red',
+  };
+
+  const buttonStyleY = {
+    width: '80px',
+    height: '60px',
+    backgroundColor: 'Yellow',
+  };
+
+  function setGamefieldAndWinnerStatus() {
     setGamefield([
-    [' ', ' ', ' ', ' ', ' ', ' ', ' '],
-    [' ', ' ', ' ', ' ', ' ', ' ', ' '],
-    [' ', ' ', ' ', ' ', ' ', ' ', ' '],
-    [' ', ' ', ' ', ' ', ' ', ' ', ' '],
-    [' ', ' ', ' ', ' ', ' ', ' ', ' '],
-    [' ', ' ', ' ', ' ', ' ', ' ', ' '],
-  ]);
-  winnerstatus = false;
-}
+      [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+      [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+      [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+      [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+      [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+      [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    ]);
+    winnerstatus = false;
+  }
+
   function addCoinCol(colIndex: number) {
     const newGamefield = [...gamefield];
     for (let i = gamefield.length - 1; i >= 0; i--) {
       if (newGamefield[i][colIndex] === ' ') {
         if (turn === true) {
-          newGamefield[i][colIndex] = 'X'; // 'X' for player 1
+          newGamefield[i][colIndex] = 'X'; // 'X' für Spieler 1
           turn = false;
           break;
         } else {
-          newGamefield[i][colIndex] = 'O'; // 'O' for player 2
+          newGamefield[i][colIndex] = 'O'; // 'O' für Spieler 2
           turn = true;
           break;
         }
@@ -278,79 +293,82 @@ function App() {
     setGamefield(newGamefield);
     checkWinner(newGamefield);
     if (winnerstatus === true) {
-      if (turn === true) {
-        alert("O hat gewonnen");
-      } else {
-        alert("X hat gewonnen");
-      }
       setTimeout(() => {
         setGamefieldAndWinnerStatus();
       }, 5000);
     }
     console.log(winnerstatus);
+  }
 
-   
+  function renderButton(cell: string, colIndex: number, rowIndex: number) {
+    const isWinningCell = cell === 'W';
+
+    let buttonStyleToUse;
+
+    switch (cell) {
+      case 'W':
+        buttonStyleToUse = buttonStyleW;
+        break;
+      case 'X':
+        buttonStyleToUse = buttonStyleR;
+        break;
+      case 'O':
+        buttonStyleToUse = buttonStyleY;
+        break;
+      default:
+        buttonStyleToUse = buttonStyle;
+    }
+
+    return (
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => addCoinCol(colIndex)}
+        style={buttonStyleToUse}
+        key={`${rowIndex}-${colIndex}`}
+        disabled={isWinningCell}
+      >
+        {cell}
+      </Button>
+    );
   }
 
   return (
-    /* <div id="center">
-      <table>
-        <tbody>
-          {gamefield.map((row, rowIndex) => (
-            <tr key={rowIndex}>
-              {row.map((cell, colIndex) => (
-                <td key={colIndex}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => addCoinCol(colIndex)}
-                    style={buttonStyle}
-                  >
-                    {cell}
-                  </Button>
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div> */
+    <ThemeProvider theme={defaultTheme}>
+      <AppBar position="relative">
+        <Toolbar>
+          <Typography variant="h6" color="inherit" noWrap flex={1} style={{ fontFamily: schriftArt }}>
+            4 Gewinnt von Idioten
+          </Typography>
 
-      <ThemeProvider theme={defaultTheme}>
-        <AppBar position="relative">
-          <Toolbar>
-            <Typography variant="h6" color="inherit" noWrap flex={1} style={{ fontFamily: schriftArt }}>
-              4 Gewinnt von Idioten
-            </Typography>
+          <Button
+            component="a"
+            href="https://webdesign.thepic.de"
+            target="_blank"
+            rel="noopener noreferrer"
+            variant="text"
+            color="inherit"
+            style={{ marginRight: '20px', fontSize: '1.2rem', fontFamily: schriftArt }}
+          >
+            Home
+          </Button>
 
-            <Button
-                component="a" // 'a' für Anchor-Element
-                href="https://webdesign.thepic.de" // Ersetze dies durch die tatsächliche Website-URL
-                target="_blank" // Öffnet den Link in einem neuen Tab
-                rel="noopener noreferrer" // Empfohlene Sicherheitspraxis für externe Links
-                variant="text" // Du kannst 'contained' oder 'outlined' verwenden, je nach Bedarf
-                color="inherit" // Vererbt die Farbe von der umgebenden Komponente (AppBar)
-                style={{ marginRight: '20px', fontSize: '1.2rem', fontFamily: schriftArt}}
-            >
-              Home
-            </Button>
+          <Button
+            component="a"
+            href="https://webdesign.thepic.de"
+            target="_blank"
+            rel="noopener noreferrer"
+            variant="text"
+            color="inherit"
+            style={{ marginRight: '20px', fontSize: '1.2rem', fontFamily: schriftArt }}
+          >
+            About us
+          </Button>
+        </Toolbar>
+      </AppBar>
 
-            <Button
-                component="a" // 'a' für Anchor-Element
-                href="https://webdesign.thepic.de" // Ersetze dies durch die tatsächliche Website-URL
-                target="_blank" // Öffnet den Link in einem neuen Tab
-                rel="noopener noreferrer" // Empfohlene Sicherheitspraxis für externe Links
-                variant="text" // Du kannst 'contained' oder 'outlined' verwenden, je nach Bedarf
-                color="inherit" // Vererbt die Farbe von der umgebenden Komponente (AppBar)
-                style={{ marginRight: '20px', fontSize: '1.2rem', fontFamily: schriftArt}}
-            >
-              About us
-            </Button>
-
-          </Toolbar>
-        </AppBar>
-
-      <Box /*component="section" /*sx={{ flexGrow: 1 }} alignSelf="center" justifyContent="center" direction="column"*/display="flex"
+      <Box
+        display="flex"
         justifyContent="center"
         alignItems="center"
         minHeight="100vh"
@@ -360,25 +378,7 @@ function App() {
           {gamefield.map((row, rowIndex) => (
             <tr key={rowIndex}>
               {row.map((cell, colIndex) => (
-                <td key={colIndex}>
-                  {rowIndex == 0 ? 
-                    <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => addCoinCol(colIndex)}
-                    style={buttonStyle1}
-                  >
-                    {cell}
-                  </Button> : <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => addCoinCol(colIndex)}
-                      disabled
-                      style={buttonStyle}
-                    >
-                      {cell}
-                    </Button>}
-                </td>
+                <td key={colIndex}>{renderButton(cell, colIndex, rowIndex)}</td>
               ))}
             </tr>
           ))}
@@ -394,30 +394,6 @@ function App() {
         </Button>
       </Box>
     </ThemeProvider>
-
-      /* <TableContainer
-        component={Paper}
-        variant="outlined"
-      >
-        <Table aria-label="demo table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Dessert</TableCell>
-              <TableCell>Calories</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            <TableRow>
-              <TableCell>Frozen yoghurt</TableCell>
-              <TableCell>109</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Cupcake</TableCell>
-              <TableCell>305</TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </TableContainer> */
   );
 }
 
