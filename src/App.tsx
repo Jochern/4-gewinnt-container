@@ -38,6 +38,10 @@ function checkRowsX(gamefield: any): void {
       const symbol = gamefield[row][col];
       if (symbol === 'X' && gamefield[row][col + 1] === symbol && gamefield[row][col + 2] === symbol && gamefield[row][col + 3] === symbol) {
         winnerstatus = true; // Gewinner in der Reihe gefunden
+        gamefield[row][col] = 'W';
+        gamefield[row][col + 1] = 'W';
+        gamefield[row][col + 2] = 'W';
+        gamefield[row][col + 3] = 'W';
         return;
       }
     }
@@ -50,6 +54,10 @@ function checkRowsO(gamefield: any): void {
       const symbol = gamefield[row][col];
       if (symbol === 'O' && gamefield[row][col + 1] === symbol && gamefield[row][col + 2] === symbol && gamefield[row][col + 3] === symbol) {
         winnerstatus = true; // Gewinner in der Reihe gefunden
+        gamefield[row][col] = 'W';
+        gamefield[row][col + 1] = 'W';
+        gamefield[row][col + 2] = 'W';
+        gamefield[row][col + 3] = 'W';
         return;
       }
     }
@@ -62,7 +70,12 @@ function checkColumnsX(gamefield: any): void {
       const symbol = gamefield[row][col];
       if (symbol === 'X' && gamefield[row + 1][col] === symbol && gamefield[row + 2][col] === symbol && gamefield[row + 3][col] === symbol) {
         winnerstatus = true; // Gewinner in der Spalte gefunden
+        gamefield[row][col] = 'W';
+        gamefield[row + 1][col] = 'W';
+        gamefield[row + 2][col] = 'W';
+        gamefield[row + 3][col] = 'W';
         return;
+
       }
     }
   }
@@ -74,6 +87,10 @@ function checkColumnsO(gamefield: any): void {
       const symbol = gamefield[row][col];
       if (symbol === 'O' && gamefield[row + 1][col] === symbol && gamefield[row + 2][col] === symbol && gamefield[row + 3][col] === symbol) {
         winnerstatus = true; // Gewinner in der Spalte gefunden
+        gamefield[row][col] = 'W';
+        gamefield[row + 1][col] = 'W';
+        gamefield[row + 2][col] = 'W';
+        gamefield[row + 3][col] = 'W';
         return;
       }
     }
@@ -91,12 +108,20 @@ function checkDiagonalsX(gamefield: any): void {
       // Diagonale von links oben nach rechts unten \
       if (symbol === 'X' && gamefield[row - 1][col + 1] === 'X' && gamefield[row - 2][col + 2] === 'X' && gamefield[row - 3][col + 3] === 'X') {
         winnerstatus = true; // Gewinner in der Diagonale gefunden
+        gamefield[row][col] = 'W';
+        gamefield[row - 1][col + 1] = 'W';
+        gamefield[row - 2][col + 2] = 'W';
+        gamefield[row - 3][col + 3] = 'W';
         return;
       }
 
       // Diagonale von rechts oben nach links unten /
       if (col < cols - 3 && symbol === 'X' && gamefield[row - 1][col + 1] === 'X' && gamefield[row - 2][col + 2] === 'X' && gamefield[row - 3][col + 3] === 'X') {
         winnerstatus = true; // Gewinner in der Diagonale gefunden
+        gamefield[row][col] = 'W';
+        gamefield[row - 1][col + 1] = 'W';
+        gamefield[row - 2][col + 2] = 'W';
+        gamefield[row - 3][col + 3] = 'W';
         return;
       }
     }
@@ -107,12 +132,20 @@ function checkDiagonalsX(gamefield: any): void {
       // Diagonale von rechts unten nach links oben /
       if (symbol === 'X' && gamefield[row - 1][col - 1] === 'X' && gamefield[row - 2][col - 2] === 'X' && gamefield[row - 3][col - 3] === 'X') {
         winnerstatus = true; // Gewinner in der Diagonale gefunden
+        gamefield[row][col] = 'W';
+        gamefield[row - 1][col - 1] = 'W';
+        gamefield[row - 2][col - 2] = 'W';
+        gamefield[row - 3][col - 3] = 'W';
         return;
       }
 
       // Diagonale von links unten nach rechts oben \
       if (symbol === 'X' && gamefield[row - 1][col] === 'X' && gamefield[row - 2][col + 1] === 'X' && gamefield[row - 3][col + 2] === 'X') {
         winnerstatus = true; // Gewinner in der Diagonale gefunden
+        gamefield[row][col] = 'W';
+        gamefield[row - 1][col] = 'W';
+        gamefield[row - 2][col + 1] = 'W';
+        gamefield[row - 3][col + 2] = 'W';
         return;
       }
     }
@@ -130,12 +163,20 @@ function checkDiagonalsO(gamefield: any): void {
       // Diagonale von links oben nach rechts unten \
       if (symbol === 'O' && gamefield[row - 1][col + 1] === 'O' && gamefield[row - 2][col + 2] === 'O' && gamefield[row - 3][col + 3] === 'O') {
         winnerstatus = true; // Gewinner in der Diagonale gefunden
+        gamefield[row][col] = 'W';
+        gamefield[row - 1][col + 1] = 'W';
+        gamefield[row - 2][col + 2] = 'W';
+        gamefield[row - 3][col + 3] = 'W';
         return;
       }
 
       // Diagonale von rechts oben nach links unten /
       if (col < cols - 3 && symbol === 'O' && gamefield[row - 1][col + 1] === 'O' && gamefield[row - 2][col + 2] === 'O' && gamefield[row - 3][col + 3] === 'O') {
         winnerstatus = true; // Gewinner in der Diagonale gefunden
+        gamefield[row][col] = 'W';
+        gamefield[row - 1][col + 1] = 'W';
+        gamefield[row - 2][col + 2] = 'W';
+        gamefield[row - 3][col + 3] = 'W';
         return;
       }
     }
@@ -146,12 +187,20 @@ function checkDiagonalsO(gamefield: any): void {
       // Diagonale von rechts unten nach links oben /
       if (symbol === 'O' && gamefield[row - 1][col - 1] === 'O' && gamefield[row - 2][col - 2] === 'O' && gamefield[row - 3][col - 3] === 'O') {
         winnerstatus = true; // Gewinner in der Diagonale gefunden
+        gamefield[row][col] = 'W';
+        gamefield[row - 1][col - 1] = 'W';
+        gamefield[row - 2][col - 2] = 'W';
+        gamefield[row - 3][col - 3] = 'W';
         return;
       }
 
       // Diagonale von links unten nach rechts oben \
       if (symbol === 'O' && gamefield[row - 1][col] === 'O' && gamefield[row - 2][col + 1] === 'O' && gamefield[row - 3][col + 2] === 'O') {
         winnerstatus = true; // Gewinner in der Diagonale gefunden
+        gamefield[row][col] = 'W';
+        gamefield[row - 1][col] = 'W';
+        gamefield[row - 2][col + 1] = 'W';
+        gamefield[row - 3][col + 2] = 'W';
         return;
       }
     }
@@ -192,6 +241,12 @@ function App() {
   const buttonStyle1 = {
     width: '80px', // Ändere die Breite nach Bedarf
     height: '60px', // Ändere die Höhe nach Bedarf
+  };
+
+  const buttonStyleW = {
+    width: '80px', // Ändere die Breite nach Bedarf
+    height: '60px', // Ändere die Höhe nach Bedarf
+    backgroundColor: 'yellow',
   };
 
  function setGamefieldAndWinnerStatus() {
