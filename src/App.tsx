@@ -38,6 +38,7 @@ function checkRowsX(gamefield: any): void {
       const symbol = gamefield[row][col];
       if (symbol === 'X' && gamefield[row][col + 1] === symbol && gamefield[row][col + 2] === symbol && gamefield[row][col + 3] === symbol) {
         winnerstatus = true; // Gewinner in der Reihe gefunden
+
         return;
       }
     }
@@ -50,6 +51,7 @@ function checkRowsO(gamefield: any): void {
       const symbol = gamefield[row][col];
       if (symbol === 'O' && gamefield[row][col + 1] === symbol && gamefield[row][col + 2] === symbol && gamefield[row][col + 3] === symbol) {
         winnerstatus = true; // Gewinner in der Reihe gefunden
+
         return;
       }
     }
