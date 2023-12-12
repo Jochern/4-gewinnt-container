@@ -249,6 +249,7 @@ function App() {
     width: '80px',
     height: '60px',
     backgroundColor: 'Green',
+    fontsize: 'bold',
   };
 
   const buttonStyleR = {
@@ -394,7 +395,35 @@ function App() {
         </Button>
       </Box>
     </ThemeProvider>
-  );
+);
+}
+export default App;
+interface DiaTextState {
+  text: string;
 }
 
-export default App;
+class DiaText extends React.Component<{}, DiaTextState> {
+  constructor(props: {}) {
+    super(props);
+    this.state = {
+      text: 'Hello world!',
+    };
+  }
+
+  handleTextChange = () => {
+    this.setState({ text: 'This is my new text!' });
+  };
+
+  render() {
+    return (
+      <div>
+        <h2>{this.state.text}</h2>
+        <button onClick={this.handleTextChange}>Change text</button>
+      </div>
+    );
+  }
+}
+
+// export default DiaText;
+
+
