@@ -568,14 +568,15 @@ function App() {
         <ToggleButton
           value="check"
           selected={selected}
-          onChange={() => changeBotStatus{
+          onChange={() => {
+            changeBotStatus()
             setSelected(!selected);
           }}
-          > 
-          bot
-          </ToggleButton>
-          </Box>
-          </ThemeProvider>
+          >
+          Bot
+        </ToggleButton>
+      </Box>
+    </ThemeProvider>
 );
 }
 export default App;
