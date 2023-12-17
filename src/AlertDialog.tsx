@@ -6,6 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useEffect } from 'react';
+import { reset } from './App';
 
 export interface AlertDialogProps {
   title: string,
@@ -33,6 +34,7 @@ export default function AlertDialog({visible, onClosed, onReset, title}: AlertDi
   const startTimer = async () => {
     console.log('found')
     for(let i = 10; i >= 0; i--) {
+      if(reset === false){
       console.log('found' + i)
       await new Promise((resolve) => {
         setTimeout(resolve, 1000);
@@ -44,6 +46,7 @@ export default function AlertDialog({visible, onClosed, onReset, title}: AlertDi
         onClosed();
         onReset();
       }
+    }
     }
   }
 
