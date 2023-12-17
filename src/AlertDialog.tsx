@@ -5,31 +5,69 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { useEffect } from 'react';
 
-export default function AlertDialog() {
-  const [open, setOpen] = React.useState(false);
+export interface AlertDialogProps {
+  title: string,
+  visible: boolean,
+  onClosed: () => void
+  onReset: () => void
+}
+
+export default function AlertDialog({visible, onClosed, onReset, title}: AlertDialogProps) {
+  const [time, setTimer] = React.useState(0);
+  useEffect(() => {
+    const fetchData = async () => {
+      await startTimer();  
+    }
+
+    if(visible) {
+      setTimer(10);
+      
+      fetchData().catch(console.error);
+    }
+
+    
+  },[visible])
+
+  const startTimer = async () => {
+    console.log('found')
+    for(let i = 10; i >= 0; i--) {
+      console.log('found' + i)
+      await new Promise((resolve) => {
+        setTimeout(resolve, 1000);
+      });
+      console.log(i)
+      setTimer(i);
+
+      if(i == 0) {
+        onClosed();
+        onReset();
+      }
+    }
+  }
 
   const handleClickOpen = () => {
-    setOpen(true);
+    onClosed();
   };
 
   const handleClose = () => {
-    setOpen(false);
+    onClosed();
+  };
+
+  const handleReset = () => {
+    onReset();
   };
 
   return (
-    <React.Fragment>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Open alert dialog
-      </Button>
-      <Dialog
-        open={open}
+    <Dialog
+        open={visible}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Gewinner ermittelt"}
+          {title}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
@@ -37,12 +75,11 @@ export default function AlertDialog() {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Disagree</Button>
+          <Button onClick={handleReset}>{"Reset (" + (time) + "s)"}</Button>
           <Button onClick={handleClose} autoFocus>
-            Agree
+            Review match
           </Button>
         </DialogActions>
       </Dialog>
-    </React.Fragment>
   );
 }
