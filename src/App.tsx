@@ -7,7 +7,8 @@ import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Grid'
 import { AppBar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Toolbar, Typography } from '@mui/material';
 import AlertDialog from './AlertDialog';
-//import AlertDialog from './AlertDialog';
+import CheckIcon from '@mui/icons-material/Check';
+import ToggleButton from '@mui/material/ToggleButton';
 
 let turn: boolean = true;
 let winnerstatus = false;
@@ -16,13 +17,16 @@ var dialogTitle: string;
 let bot: boolean = false;
 export let reset: boolean = false;
 
-function activateBot(){
-  bot = true;
+function changeBotStatus(){
+  if(bot === true){
+    bot = false;
+  }
+  else{
+    bot = true;
+  }
 }
 
-function deactivateBot(){
-  bot = false;
-}
+
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -497,8 +501,9 @@ function App() {
       </Button>
     );
   }
-
+  const [selected, setSelected] = React.useState(false);
   return (
+
     <ThemeProvider theme={defaultTheme}>
 
       <AlertDialog onClosed={onClose} onReset={onReset} visible={isOpen} title={dialogTitle} />
@@ -560,24 +565,17 @@ function App() {
         >
           Reset
         </Button>
-        <Button
-          color="secondary"
-          variant="contained"
-          onClick={() => deactivateBot()}
-          style={buttonStyle1}
-        >
-          Bot aus
-        </Button>
-        <Button
-          color="secondary"
-          variant="contained"
-          onClick={() => activateBot()}
-          style={buttonStyle1}
-        >
-          Bot an
-        </Button>
-      </Box>
-    </ThemeProvider>
+        <ToggleButton
+          value="check"
+          selected={selected}
+          onChange={() => changeBotStatus{
+            setSelected(!selected);
+          }}
+          > 
+          bot
+          </ToggleButton>
+          </Box>
+          </ThemeProvider>
 );
 }
 export default App;
