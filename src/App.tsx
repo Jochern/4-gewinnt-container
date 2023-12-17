@@ -10,7 +10,7 @@ import { AppBar, Table, TableBody, TableCell, TableContainer, TableHead, TableRo
 let turn: boolean = true;
 let winnerstatus = false;
 let i: number = 0;
-
+let dialogtitle: String;
 
 function checkWinner(gamefield: any): void {
   if (turn === false) {
@@ -24,9 +24,9 @@ function checkWinner(gamefield: any): void {
   }
   if (winnerstatus === true) {
     if (turn === true) {
-      alert("O hat gewonnen");
+      dialogtitle = "O hat gewonnen"
     } else {
-      alert("X hat gewonnen");
+      dialogtitle = "X hat gewonnen"
     }
     
   }
