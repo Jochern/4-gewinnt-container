@@ -517,7 +517,7 @@ function App() {
       <AppBar position="relative">
         <Toolbar>
           <Typography variant="h6" color="inherit" noWrap flex={1} style={{ fontFamily: schriftArt }}>
-            4 Gewinnt von Idioten
+            4 Gewinnt
           </Typography>
 
           <Button
