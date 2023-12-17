@@ -8,7 +8,8 @@ import Grid from '@mui/material/Grid'
 import { AppBar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Toolbar, Typography } from '@mui/material';
 import AlertDialog from './AlertDialog';
 import CheckIcon from '@mui/icons-material/Check';
-import ToggleButton from '@mui/material/ToggleButton';
+import MuiToggleButton from '@mui/material/ToggleButton';
+import SmartToyOutlinedIcon from '@mui/icons-material/SmartToyOutlined';
 
 let turn: boolean = true;
 let winnerstatus = false;
@@ -26,7 +27,12 @@ function changeBotStatus(){
   }
 }
 
-
+const ToggleButton = styled(MuiToggleButton)(({  }) => ({
+  "&.Mui-selected, &.Mui-selected:hover": {
+    color: "white",
+    backgroundColor: "red"
+  }
+}));
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -573,7 +579,7 @@ function App() {
             setSelected(!selected);
           }}
           >
-          Bot
+          <SmartToyOutlinedIcon color="primary" fontSize="large" />
         </ToggleButton>
       </Box>
     </ThemeProvider>
