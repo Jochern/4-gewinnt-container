@@ -48,7 +48,10 @@ const defaultTheme = createTheme({
     fontFamily: schriftArt,
   },
 });
-
+function isColumnFull(currentGamefield: any[], columnIndex: number): boolean {
+  // Überprüfe, ob die oberste Zelle in der Spalte bereits belegt ist
+  return currentGamefield[0][columnIndex] !== ' ';
+}
 
 function App() {
   const [gamefield, setGamefield] = useState([
@@ -61,8 +64,8 @@ function App() {
   ]);
 
   const buttonStyle = {
-    width: '80px',
-    height: '60px',
+    width: '110px',
+    height: '80px',
     backgroundColor: 'white',
   };
 
@@ -72,24 +75,24 @@ function App() {
   };
 
   const buttonStyleW = {
-    width: '80px',
-    height: '60px',
+    width: '110px',
+    height: '80px',
     backgroundColor: 'Green',
     color: 'Black',
     fontWeight: 'bold',
   };
 
   const buttonStyleR = {
-    width: '80px',
-    height: '60px',
+    width: '110px',
+    height: '80px',
     backgroundColor: 'Red',
     color: 'Black',
     fontWeight: 'bold',
   };
 
   const buttonStyleY = {
-    width: '80px',
-    height: '60px',
+    width: '110px',
+    height: '80px',
     backgroundColor: 'Yellow',
     color: 'Black',
     fontWeight: 'bold',
@@ -111,8 +114,8 @@ function App() {
   }
 
   function clearDraw(){
-    setGamefieldAndWinnerStatus();
     alert("Unentschieden, Spielfeld wird zurückgesetzt");
+    setGamefieldAndWinnerStatus();
     i = 0;
   }
 
@@ -132,6 +135,7 @@ function App() {
   function addCoinCol(colIndex: number) {
     reset = false;
     const newGamefield = [...gamefield];
+
     for (let i = gamefield.length - 1; i >= 0; i--) {
       if (newGamefield[i][colIndex] === ' ') {
         if (bot === false){
@@ -158,7 +162,11 @@ function App() {
       }
       }
     }
-    i++;
+    if(!isColumnFull(newGamefield, colIndex)) {
+
+      i++;
+      console.log("i erhöht!" + i);
+    }
 
     function checkWinner(gamefield: any): void {
       if (turn === false) {
@@ -354,12 +362,15 @@ function App() {
         }
       }
     }
-    
+
     setGamefield(newGamefield);
     checkWinner(newGamefield);
-    if(i === 42){
+
+    if (i === 35) {
       clearDraw();
     }
+
+
     if (winnerstatus === true) {
       /*setTimeout(() => {
         setGamefieldAndWinnerStatus();
