@@ -249,19 +249,24 @@ function App() {
     width: '80px',
     height: '60px',
     backgroundColor: 'Green',
-    fontsize: 'bold',
+    color: 'Black',
+    fontWeight: 'bold',
   };
 
   const buttonStyleR = {
     width: '80px',
     height: '60px',
     backgroundColor: 'Red',
+    color: 'Black',
+    fontWeight: 'bold',
   };
 
   const buttonStyleY = {
     width: '80px',
     height: '60px',
     backgroundColor: 'Yellow',
+    color: 'Black',
+    fontWeight: 'bold',
   };
 
   function setGamefieldAndWinnerStatus() {
