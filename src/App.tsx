@@ -9,7 +9,7 @@ import { AppBar, Table, TableBody, TableCell, TableContainer, TableHead, TableRo
 
 let turn: boolean = true;
 let winnerstatus = false;
-
+let i: number = 0;
 
 
 function checkWinner(gamefield: any): void {
@@ -140,12 +140,12 @@ function checkDiagonalsX(gamefield: any): void {
       }
 
       // Diagonale von links unten nach rechts oben \
-      if (symbol === 'X' && gamefield[row - 1][col] === 'X' && gamefield[row - 2][col + 1] === 'X' && gamefield[row - 3][col + 2] === 'X') {
+      if (symbol === 'X' && gamefield[row - 1][col + 1] === 'X' && gamefield[row - 2][col + 2] === 'X' && gamefield[row - 3][col + 3] === 'X') {
         winnerstatus = true; // Gewinner in der Diagonale gefunden
         gamefield[row][col] = 'W';
-        gamefield[row - 1][col] = 'W';
-        gamefield[row - 2][col + 1] = 'W';
-        gamefield[row - 3][col + 2] = 'W';
+        gamefield[row - 1][col + 1] = 'W';
+        gamefield[row - 2][col + 2] = 'W';
+        gamefield[row - 3][col + 3] = 'W';
         return;
       }
     }
@@ -195,12 +195,12 @@ function checkDiagonalsO(gamefield: any): void {
       }
 
       // Diagonale von links unten nach rechts oben \
-      if (symbol === 'O' && gamefield[row - 1][col] === 'O' && gamefield[row - 2][col + 1] === 'O' && gamefield[row - 3][col + 2] === 'O') {
+      if (symbol === 'O' && gamefield[row - 1][col + 1] === 'O' && gamefield[row - 2][col + 2] === 'O' && gamefield[row - 3][col + 3] === 'O') {
         winnerstatus = true; // Gewinner in der Diagonale gefunden
         gamefield[row][col] = 'W';
-        gamefield[row - 1][col] = 'W';
-        gamefield[row - 2][col + 1] = 'W';
-        gamefield[row - 3][col + 2] = 'W';
+        gamefield[row - 1][col + 1] = 'W';
+        gamefield[row - 2][col + 2] = 'W';
+        gamefield[row - 3][col + 3] = 'W';
         return;
       }
     }
@@ -274,6 +274,13 @@ function App() {
       [' ', ' ', ' ', ' ', ' ', ' ', ' '],
     ]);
     winnerstatus = false;
+    i = 0;
+  }
+
+  function clearDraw(){
+    setGamefieldAndWinnerStatus();
+    alert("Unentschieden, Spielfeld wird zurückgesetzt");
+    i = 0;
   }
 
   function addCoinCol(colIndex: number) {
@@ -290,15 +297,22 @@ function App() {
           break;
         }
       }
-    }
+    }  
+    i++;
+    
     setGamefield(newGamefield);
     checkWinner(newGamefield);
+    if(i === 42){
+      clearDraw();
+    }
     if (winnerstatus === true) {
       setTimeout(() => {
         setGamefieldAndWinnerStatus();
       }, 5000);
     }
     console.log(winnerstatus);
+    
+
   }
 
   function renderButton(cell: string, colIndex: number, rowIndex: number) {
