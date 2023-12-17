@@ -29,7 +29,6 @@ function changeBotStatus(){
 
 const ToggleButton = styled(MuiToggleButton)(({  }) => ({
   "&.Mui-selected, &.Mui-selected:hover": {
-    color: "white",
     backgroundColor: "red"
   }
 }));
