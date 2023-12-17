@@ -17,6 +17,7 @@ let i: number = 0;
 let bot: boolean = false;
 export let reset: boolean = false;
 
+
 function changeBotStatus(){
   if(bot === true){
     bot = false;
@@ -120,6 +121,7 @@ function App() {
 
   const onClose = () => {
     setOpen(false);
+    reset = true;
   }
 
   const onReset = () => {
@@ -170,7 +172,7 @@ function App() {
       }
       if (winnerstatus === true) {
         if (turn === true) {
-          setDialogTitle("0 hat gewonnen");
+          setDialogTitle("O hat gewonnen");
         } else {
           setDialogTitle("X hat gewonnen");
         }
