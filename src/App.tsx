@@ -14,7 +14,6 @@ import SmartToyOutlinedIcon from '@mui/icons-material/SmartToyOutlined';
 let turn: boolean = true;
 let winnerstatus = false;
 let i: number = 0;
-var dialogTitle: string;
 let bot: boolean = false;
 export let reset: boolean = false;
 
@@ -27,9 +26,9 @@ function changeBotStatus(){
   }
 }
 
-const ToggleButton = styled(MuiToggleButton)(({  }) => ({
+const ToggleButton = styled(MuiToggleButton)(({ theme }) => ({
   "&.Mui-selected, &.Mui-selected:hover": {
-    backgroundColor: "red"
+    backgroundColor: "#ad264a",
   }
 }));
 
