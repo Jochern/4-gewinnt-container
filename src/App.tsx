@@ -546,6 +546,8 @@ function App() {
 
       <Box
         display="flex"
+        flexDirection="column"
+        flex="1"
         justifyContent="center"
         alignItems="center"
         minHeight="100vh"
@@ -561,24 +563,40 @@ function App() {
           ))}
         </Grid>
 
-        <Button
-          color="secondary"
-          variant="contained"
-          onClick={() => setGamefieldAndWinnerStatus()}
-          style={buttonStyle1}
-        >
-          Reset
-        </Button>
-        <ToggleButton
-          value="check"
-          selected={selected}
-          onChange={() => {
-            changeBotStatus()
-            setSelected(!selected);
+        <Box
+          display="flex"
+          flexDirection="row"
+          sx={{
+            mx: "auto",
+            width: 200,
+            m: 2
           }}
+        >
+          <Button
+            color="secondary"
+            variant="contained"
+            onClick={() => setGamefieldAndWinnerStatus()}
+            style={buttonStyle1}
+            sx={{
+              m: 1,
+            }}
           >
-          <SmartToyOutlinedIcon color="primary" fontSize="large" />
-        </ToggleButton>
+            Reset
+          </Button>
+          <ToggleButton
+            value="check"
+            selected={selected}
+            onChange={() => {
+              changeBotStatus()
+              setSelected(!selected);
+            }}
+            sx={{
+              m: 1,
+            }}
+            >
+            <SmartToyOutlinedIcon color="primary" fontSize="large" />
+          </ToggleButton>
+        </Box>
       </Box>
     </ThemeProvider>
 );
