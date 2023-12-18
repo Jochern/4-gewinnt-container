@@ -87,6 +87,8 @@ function App() {
   });
 
   useEffect(() => {
+    document.title = "4 Gewinnt"
+
     function handleResize() {
       setWindowDimensions({
         height: window.innerHeight,
