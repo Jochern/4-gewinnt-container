@@ -11,6 +11,8 @@ import CheckIcon from '@mui/icons-material/Check';
 import MuiToggleButton from '@mui/material/ToggleButton';
 import SmartToyOutlinedIcon from '@mui/icons-material/SmartToyOutlined';
 
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Base:wght@700&display=swap"></link>
+
 let turn: boolean = true;
 let winnerstatus = false;
 let i: number = 0;
@@ -19,6 +21,8 @@ let voll: boolean[] = [false, false, false, false, false, false, false];
 
 export let reset: boolean = false;
 
+let player1Wins: number = 0;
+let player2Wins: number = 0;
 
 function changeBotStatus(){
   if(bot === true){
@@ -43,7 +47,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const schriftArt = 'Roboto, sans-serif';
+const schriftArt = 'Arial';
 
 const defaultTheme = createTheme({
   typography: {
@@ -172,6 +176,8 @@ function App() {
 
   }
 
+  const [player1Stats, setPlayer1Stats] = useState(0);
+  const [player2Stats, setPlayer2Stats] = useState(0);
   const [isOpen, setOpen] = useState(false);
   const [dialogTitle, setDialogTitle] = useState('');
 
@@ -244,8 +250,10 @@ function App() {
       }
       if (winnerstatus === true) {
         if (turn === true) {
+          setPlayer2Stats(player2Stats + 1);
           setDialogTitle("O hat gewonnen");
         } else {
+          setPlayer1Stats(player1Stats + 1);
           setDialogTitle("X hat gewonnen");
         }
         setOpen(true);
@@ -529,7 +537,7 @@ function App() {
                 return i;
             }
         }
-        return -1; // Column is full, should not reach here if used correctly
+        return -1; 
     }
 
     function placeCoin(row: number, col: number): void {
@@ -537,10 +545,8 @@ function App() {
         turn = true;
     }
 
-    //console.log(voll);
 
     if (allTrue() == true) {
-      //console.log("Alles Voll!" + allTrue());
       clearDraw();
     }
   }
@@ -590,6 +596,13 @@ function App() {
             4 Gewinnt
           </Typography>
 
+          <Typography variant="h6" color="inherit" noWrap flex={1} style={{ fontFamily: schriftArt }}>
+            Spieler 1 Siege: {player1Stats}
+          </Typography>
+
+          <Typography variant="h6" color="inherit" noWrap flex={1} style={{ fontFamily: schriftArt }}>
+            Spieler 2/Bot Siege: {player2Stats}
+          </Typography>
           <Button
             component="a"
             href="https://webdesign.thepic.de"
@@ -604,7 +617,7 @@ function App() {
 
           <Button
             component="a"
-            href="https://webdesign.thepic.de"
+            href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&pp=ygUIcmlja3JvbGw%3D"
             target="_blank"
             rel="noopener noreferrer"
             variant="text"
