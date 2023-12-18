@@ -10,6 +10,7 @@ import AlertDialog from './AlertDialog';
 import CheckIcon from '@mui/icons-material/Check';
 import MuiToggleButton from '@mui/material/ToggleButton';
 import SmartToyOutlinedIcon from '@mui/icons-material/SmartToyOutlined';
+import TextField from '@mui/material/TextField';
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Base:wght@700&display=swap"></link>
 
@@ -23,15 +24,6 @@ export let reset: boolean = false;
 
 let player1Wins: number = 0;
 let player2Wins: number = 0;
-
-function changeBotStatus(){
-  if(bot === true){
-    bot = false;
-  }
-  else{
-    bot = true;
-  }
-}
 
 const ToggleButton = styled(MuiToggleButton)(({ theme }) => ({
   "&.Mui-selected, &.Mui-selected:hover": {
@@ -90,6 +82,45 @@ function App() {
     width: window.innerWidth
   });
 
+  const [activePlayer, setActivePlayer] = useState(1);
+  const [playerOne, setPlayerOne] = useState('Spieler 1');
+  const [playerTwo, setPlayerTwo] = useState('Spieler 2');
+  const [isInputDone1, setInputDone1] = useState(false);
+  const [isInputDone2, setInputDone2] = useState(false);
+
+  const handlePlayerOneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPlayerOne(event.target.value);
+    //setInputDone(true); // Eingabe ist abgeschlossen
+  };
+
+  const handlePlayerTwoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPlayerTwo(event.target.value);
+    //setInputDone(true); // Eingabe ist abgeschlossen
+  };
+
+  const handleKeyPress1 = (event: React.KeyboardEvent) => {
+    if(event.key === 'Enter'){
+      setInputDone1(true); // Eingabe ist abgeschlossen
+    }
+  };
+  const handleKeyPress2 = (event: React.KeyboardEvent) => {
+    if(event.key === 'Enter'){
+      setInputDone2(true); // Eingabe ist abgeschlossen
+    }
+  };
+
+  function changeBotStatus(){
+    if(bot === true){
+      bot = false;
+      setPlayerTwo("Spieler 2"); // Setze den Namen von Spieler 2 auf "Spieler 2"
+    }
+    else{
+      bot = true;
+      setPlayerTwo("Bot"); // Setze den Namen von Spieler 2 auf "Bot"
+    }
+  }
+
+
   useEffect(() => {
     document.title = "4 Gewinnt"
 
@@ -121,11 +152,19 @@ function App() {
     width: windowDimensions.width > 480 ? '8vw' : '1vw', // if the screen width is greater than 480px, width is first, otherwise it's second
     height: windowDimensions.width > 480 ? '9vh' : '5vh', // same for the height
     backgroundColor: 'white',
+    borderRadius: '20px'
   };
 
   const buttonStyle1 = {
     width: windowDimensions.width > 480 ? '10vw' : '1vw', // if the screen width is greater than 480px, width is first, otherwise it's second
     height: windowDimensions.width > 480 ? '7vh' : '5vh', // same for the height
+    borderRadius: '15px', // Abrunden der Ecken
+  };
+
+  const buttonStyleBot = {
+    width: windowDimensions.width > 480 ? '10vw' : '9vw', // if the screen width is greater than 480px, width is first, otherwise it's second
+    height: windowDimensions.width > 480 ? '7vh' : '5vh', // same for the height
+    borderRadius: '20px',
   };
 
   const buttonStyleW = {
@@ -134,6 +173,7 @@ function App() {
     backgroundColor: 'Green',
     color: 'Black',
     fontWeight: 'bold',
+    borderRadius: '20px'
   };
 
   const buttonStyleR = {
@@ -142,6 +182,7 @@ function App() {
     backgroundColor: 'Red',
     color: 'Black',
     fontWeight: 'bold',
+    borderRadius: '20px'
   };
 
   const buttonStyleY = {
@@ -150,6 +191,7 @@ function App() {
     backgroundColor: 'Yellow',
     color: 'Black',
     fontWeight: 'bold',
+    borderRadius: '20px'
   };
 
   function setGamefieldAndWinnerStatus() {
@@ -549,6 +591,7 @@ function App() {
     if (allTrue() == true) {
       clearDraw();
     }
+    setActivePlayer(turn ? 1 : 2);
   }
 
   function renderButton(cell: string, colIndex: number, rowIndex: number) {
@@ -584,6 +627,12 @@ function App() {
     );
   }
   const [selected, setSelected] = React.useState(false);
+  // Breite eines Spielbrett-Buttons berechnen
+  const buttonWidth = windowDimensions.width > 480 ? '5vw' : '20vw';
+
+// Gesamtbreite des Spielbretts berechnen (7 Spalten im Spielbrett)
+  const gameBoardWidth = `calc(11 * ${buttonWidth})`;
+
   return (
 
     <ThemeProvider theme={defaultTheme}>
@@ -597,11 +646,11 @@ function App() {
           </Typography>
 
           <Typography variant="h6" color="inherit" noWrap flex={1} style={{ fontFamily: schriftArt }}>
-            Spieler 1 Siege: {player1Stats}
+            {playerOne} Siege: {player1Stats}
           </Typography>
         
           <Typography variant="h6" color="inherit" noWrap flex={1} style={{ fontFamily: schriftArt }}>
-            Spieler 2/Bot Siege: {player2Stats}
+            {playerTwo} Siege: {player2Stats}
           </Typography>
           <Button
             component="a"
@@ -638,7 +687,43 @@ function App() {
         minHeight="100vh"
         bgcolor="#292d2e"
       >
-        <Grid>
+
+        <Box display="flex" flexDirection="column" alignItems="center" width={gameBoardWidth}>
+          <Grid container justifyContent="space-between">
+            <Grid item xs={12} md={6}>
+              {!isInputDone1 && (
+                  <TextField
+                      onKeyPress={handleKeyPress1}
+                      id="outlined-basic"
+                      label="Spieler 1"
+                      variant="outlined"
+                      inputProps={{ style: { color: 'white' }}}
+                      onChange={handlePlayerOneChange}
+                  />
+              )}
+              <Typography variant="h6" style={{ background: activePlayer === 1 ? 'green' : 'transparent', padding: '10px', color: 'white', fontSize: windowDimensions.width > 480 ? '1rem' : '0.8rem', textAlign: windowDimensions.width > 480 ? 'left' : 'right', borderRadius: '10px',}}>
+                {playerOne}
+              </Typography>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              {!isInputDone2 && !bot && ( // Überprüfen Sie hier, ob der Bot aktiviert ist
+                  <TextField
+                      onKeyPress={handleKeyPress2}
+                      id="outlined-basic"
+                      label="Spieler 2"
+                      variant="outlined"
+                      inputProps={{ style: { color: 'white' }}}
+                      onChange={handlePlayerTwoChange}
+                  />
+              )}
+
+              <Typography variant="h6" style={{ background: activePlayer === 2 ? 'green' : 'transparent', padding: '10px', color: 'white', fontSize: windowDimensions.width > 480 ? '1rem' : '0.8rem', textAlign: windowDimensions.width > 480 ? 'left' : 'right', borderRadius: '10px',}}>
+                {playerTwo}
+              </Typography>
+            </Grid>
+          </Grid>
+
+          <Grid>
           {gamefield.map((row, rowIndex) => (
             <tr key={rowIndex}>
               {row.map((cell, colIndex) => (
@@ -646,7 +731,9 @@ function App() {
               ))}
             </tr>
           ))}
-        </Grid>
+          </Grid>
+
+        </Box>
 
         <Box
           display="flex"
@@ -668,19 +755,22 @@ function App() {
           >
             Reset
           </Button>
+
           <ToggleButton
-            value="check"
-            selected={selected}
-            onChange={() => {
-              changeBotStatus()
-              setSelected(!selected);
-            }}
-            sx={{
-              m: 1,
-            }}
-            >
+              value="check"
+              selected={selected}
+              onChange={() => {
+                changeBotStatus()
+                setSelected(!selected);
+              }}
+              style={buttonStyleBot}
+              sx={{
+                m: 1,
+              }}
+          >
             <SmartToyOutlinedIcon color="primary" fontSize="large" />
           </ToggleButton>
+
         </Box>
       </Box>
     </ThemeProvider>
