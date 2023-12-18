@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Button from '@mui/material/Button';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
@@ -81,6 +81,27 @@ function isColumnFull(currentGamefield: any[], columnIndex: number): boolean {
 }
 
 function App() {
+  const [windowDimensions, setWindowDimensions] = useState({
+    height: window.innerHeight,
+    width: window.innerWidth
+  });
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowDimensions({
+        height: window.innerHeight,
+        width: window.innerWidth
+      });
+    }
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+
   const [gamefield, setGamefield] = useState([
     [' ', ' ', ' ', ' ', ' ', ' ', ' '],
     [' ', ' ', ' ', ' ', ' ', ' ', ' '],
@@ -91,35 +112,35 @@ function App() {
   ]);
 
   const buttonStyle = {
-    width: '110px',
-    height: '80px',
+    width: windowDimensions.width > 480 ? '8vw' : '1vw', // if the screen width is greater than 480px, width is first, otherwise it's second
+    height: windowDimensions.width > 480 ? '9vh' : '5vh', // same for the height
     backgroundColor: 'white',
   };
 
   const buttonStyle1 = {
-    width: '80px',
-    height: '60px',
+    width: windowDimensions.width > 480 ? '10vw' : '1vw', // if the screen width is greater than 480px, width is first, otherwise it's second
+    height: windowDimensions.width > 480 ? '7vh' : '5vh', // same for the height
   };
 
   const buttonStyleW = {
-    width: '110px',
-    height: '80px',
+    width: windowDimensions.width > 480 ? '8vw' : '1vw', // if the screen width is greater than 480px, width is first, otherwise it's second
+    height: windowDimensions.width > 480 ? '9vh' : '5vh', // same for the height
     backgroundColor: 'Green',
     color: 'Black',
     fontWeight: 'bold',
   };
 
   const buttonStyleR = {
-    width: '110px',
-    height: '80px',
+    width: windowDimensions.width > 480 ? '8vw' : '1vw', // if the screen width is greater than 480px, width is first, otherwise it's second
+    height: windowDimensions.width > 480 ? '9vh' : '5vh', // same for the height
     backgroundColor: 'Red',
     color: 'Black',
     fontWeight: 'bold',
   };
 
   const buttonStyleY = {
-    width: '110px',
-    height: '80px',
+    width: windowDimensions.width > 480 ? '8vw' : '1vw', // if the screen width is greater than 480px, width is first, otherwise it's second
+    height: windowDimensions.width > 480 ? '9vh' : '5vh', // same for the height
     backgroundColor: 'Yellow',
     color: 'Black',
     fontWeight: 'bold',
@@ -617,7 +638,7 @@ function App() {
           flexDirection="row"
           sx={{
             mx: "auto",
-            width: 200,
+            width: 100,
             m: 2
           }}
         >
