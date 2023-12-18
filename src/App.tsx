@@ -693,33 +693,61 @@ function App() {
             <Grid item xs={12} md={6}>
               {!isInputDone1 && (
                   <TextField
-                      onKeyPress={handleKeyPress1}
-                      id="outlined-basic"
-                      label="Spieler 1"
-                      variant="outlined"
-                      inputProps={{ style: { color: 'white' }}}
-                      onChange={handlePlayerOneChange}
-                  />
+                  onKeyPress={handleKeyPress1}
+                  id="outlined-basic"
+                  label="Spieler 1"
+                  variant="outlined"
+                  InputProps={{
+                    style: {
+                      backgroundColor: 'white',
+                      display: 'flex',
+                      justifyContent: 'center',  // Zentriert die Eingabe horizontal
+                    }
+                  }}
+                  inputProps={{
+                    style: {
+                      color: 'black',
+                      textAlign: 'center',  // Zentriert den Text horizontal
+                    }
+                  }}
+                  onChange={handlePlayerOneChange}
+                />
+                
               )}
-              <Typography variant="h6" style={{ background: activePlayer === 1 ? 'green' : 'transparent', padding: '10px', color: 'white', fontSize: windowDimensions.width > 480 ? '1rem' : '0.8rem', textAlign: windowDimensions.width > 480 ? 'left' : 'right', borderRadius: '10px',}}>
+              <Typography variant="h6" style={{ background: activePlayer === 1 ? 'green' : 'transparent', padding: '10px', color: 'white', fontSize: windowDimensions.width > 480 ? '1rem' : '0.8rem', textAlign: 'center', borderRadius: '10px',}}>
                 {playerOne}
               </Typography>
+
             </Grid>
             <Grid item xs={12} md={6}>
               {!isInputDone2 && !bot && ( // Überprüfen Sie hier, ob der Bot aktiviert ist
                   <TextField
-                      onKeyPress={handleKeyPress2}
-                      id="outlined-basic"
-                      label="Spieler 2"
-                      variant="outlined"
-                      inputProps={{ style: { color: 'white' }}}
-                      onChange={handlePlayerTwoChange}
-                  />
+                  onKeyPress={handleKeyPress2}
+                  id="outlined-basic"
+                  label="Spieler 2"
+                  variant="outlined"
+                  InputProps={{
+                    style: {
+                      backgroundColor: 'white',
+                      display: 'flex',
+                      justifyContent: 'center',  // Zentriert die Eingabe horizontal
+                    }
+                  }}
+                  inputProps={{
+                    style: {
+                      color: 'black',
+                      textAlign: 'center',  // Zentriert den Text horizontal
+                    }
+                  }}
+                  onChange={handlePlayerTwoChange}
+                />
+                
               )}
 
-              <Typography variant="h6" style={{ background: activePlayer === 2 ? 'green' : 'transparent', padding: '10px', color: 'white', fontSize: windowDimensions.width > 480 ? '1rem' : '0.8rem', textAlign: windowDimensions.width > 480 ? 'left' : 'right', borderRadius: '10px',}}>
-                {playerTwo}
-              </Typography>
+          <Typography variant="h6" style={{ background: activePlayer === 2 ? 'green' : 'transparent', padding: '10px', color: 'white', fontSize: windowDimensions.width > 480 ? '1rem' : '0.8rem', textAlign: 'center', borderRadius: '10px',}}>
+            {playerTwo}
+          </Typography>
+
             </Grid>
           </Grid>
 
@@ -781,28 +809,5 @@ interface DiaTextState {
   text: string;
 }
 
-class DiaText extends React.Component<{}, DiaTextState> {
-  constructor(props: {}) {
-    super(props);
-    this.state = {
-      text: 'Hello world!',
-    };
-  }
-
-  handleTextChange = () => {
-    this.setState({ text: 'This is my new text!' });
-  };
-
-  render() {
-    return (
-      <div>
-        <h2>{this.state.text}</h2>
-        <button onClick={this.handleTextChange}>Change text</button>
-      </div>
-    );
-  }
-}
-
-// export default DiaText;
 
 
