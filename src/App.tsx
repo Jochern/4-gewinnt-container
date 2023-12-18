@@ -16,27 +16,15 @@ import TextField from '@mui/material/TextField';
 
 let turn: boolean = true;
 let winnerstatus = false;
-let i: number = 0;
 let bot: boolean = false;
 let voll: boolean[] = [false, false, false, false, false, false, false];
 
 export let reset: boolean = false;
 
-let player1Wins: number = 0;
-let player2Wins: number = 0;
-
 const ToggleButton = styled(MuiToggleButton)(({ theme }) => ({
   "&.Mui-selected, &.Mui-selected:hover": {
     backgroundColor: "#ad264a",
   }
-}));
-
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
 }));
 
 const schriftArt = 'Arial';
@@ -50,9 +38,7 @@ function allTrue(): boolean{
   let temp = 0;
   voll.forEach((element, index) => {
     if(element === true){
-      //console.log("element "+ element);
       temp++;
-      //console.log("temp "+ temp);
     }
   });
 
@@ -71,7 +57,6 @@ function isColumnFull(currentGamefield: any[], columnIndex: number): boolean {
 
   if(istvoll){
     voll[columnIndex] = true;
-    //console.log("Spalte" + columnIndex + "ist voll!");
   }
   return istvoll;
 }
@@ -90,12 +75,10 @@ function App() {
 
   const handlePlayerOneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPlayerOne(event.target.value);
-    //setInputDone(true); // Eingabe ist abgeschlossen
   };
 
   const handlePlayerTwoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPlayerTwo(event.target.value);
-    //setInputDone(true); // Eingabe ist abgeschlossen
   };
 
   const handleKeyPress1 = (event: React.KeyboardEvent) => {
@@ -122,7 +105,7 @@ function App() {
 
 
   useEffect(() => {
-    document.title = "4 Gewinnt"
+    document.title = "Four In A Row"
 
     function handleResize() {
       setWindowDimensions({
@@ -177,8 +160,8 @@ function App() {
   };
 
   const buttonStyleR = {
-    width: windowDimensions.width > 480 ? '8vw' : '1vw', // if the screen width is greater than 480px, width is first, otherwise it's second
-    height: windowDimensions.width > 480 ? '9vh' : '5vh', // same for the height
+    width: windowDimensions.width > 480 ? '8vw' : '1vw',
+    height: windowDimensions.width > 480 ? '9vh' : '5vh',
     backgroundColor: 'Red',
     color: 'Black',
     fontWeight: 'bold',
@@ -186,8 +169,8 @@ function App() {
   };
 
   const buttonStyleY = {
-    width: windowDimensions.width > 480 ? '8vw' : '1vw', // if the screen width is greater than 480px, width is first, otherwise it's second
-    height: windowDimensions.width > 480 ? '9vh' : '5vh', // same for the height
+    width: windowDimensions.width > 480 ? '8vw' : '1vw',
+    height: windowDimensions.width > 480 ? '9vh' : '5vh',
     backgroundColor: 'Yellow',
     color: 'Black',
     fontWeight: 'bold',
@@ -205,15 +188,12 @@ function App() {
     ]);
     winnerstatus = false;
     turn = true;
-    i = 0;
     reset = true;
   }
 
   function clearDraw(){
     setDialogTitle("Unentschieden!");
     setOpen(true);
-    //alert("Unentschieden, Spielfeld wird zurückgesetzt");
-    i = 0;
     voll = [false, false, false, false, false, false, false];
 
   }
@@ -272,13 +252,6 @@ function App() {
 
     setGamefield(newGamefield);
     checkWinner(newGamefield);
-
-    if(!isColumnFull(newGamefield, colIndex)) {
-      //console.log("Spalte nicht voll.");
-    }
-    else{
-      //console.log("Spalte voll!");
-    }
 
     function checkWinner(gamefield: any): void {
       if (turn === false) {
@@ -477,12 +450,6 @@ function App() {
       }
     }
 
-    if (winnerstatus === true) {
-      /*setTimeout(() => {
-        setGamefieldAndWinnerStatus();
-      }, 5000);*/
-    }
-    //console.log("Gewonnen "+ winnerstatus);
     function botMove(): void {
       const bestMove = findBestMove();
   
@@ -493,7 +460,6 @@ function App() {
           makeRandomMove();
       }
   
-      // Optionally, you may want to check for a winner after each move
       checkWinner(gamefield);
   }
     function findBestMove(): [number, number] | null {
@@ -630,7 +596,7 @@ function App() {
   // Breite eines Spielbrett-Buttons berechnen
   const buttonWidth = windowDimensions.width > 480 ? '5vw' : '20vw';
 
-// Gesamtbreite des Spielbretts berechnen (7 Spalten im Spielbrett)
+  // Gesamtbreite des Spielbretts berechnen (7 Spalten im Spielbrett)
   const gameBoardWidth = `calc(11 * ${buttonWidth})`;
 
   return (
@@ -642,7 +608,7 @@ function App() {
       <AppBar position="relative">
         <Toolbar>
           <Typography variant="h6" color="inherit" noWrap flex={1} style={{ fontFamily: schriftArt }}>
-            4 Gewinnt
+            Four In A Row
           </Typography>
 
           <Typography variant="h6" color="inherit" noWrap flex={1} style={{ fontFamily: schriftArt }}>
@@ -661,7 +627,7 @@ function App() {
             color="inherit"
             style={{ marginRight: '20px', fontSize: '1.2rem', fontFamily: schriftArt }}
           >
-            Home
+            Präsentation
           </Button>
 
           <Button
@@ -805,9 +771,3 @@ function App() {
 );
 }
 export default App;
-interface DiaTextState {
-  text: string;
-}
-
-
-
