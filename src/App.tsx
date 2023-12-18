@@ -599,7 +599,7 @@ function App() {
           <Typography variant="h6" color="inherit" noWrap flex={1} style={{ fontFamily: schriftArt }}>
             Spieler 1 Siege: {player1Stats}
           </Typography>
-
+        
           <Typography variant="h6" color="inherit" noWrap flex={1} style={{ fontFamily: schriftArt }}>
             Spieler 2/Bot Siege: {player2Stats}
           </Typography>
