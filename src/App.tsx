@@ -15,6 +15,8 @@ let turn: boolean = true;
 let winnerstatus = false;
 let i: number = 0;
 let bot: boolean = false;
+let voll: boolean[] = [false, false, false, false, false, false, false];
+
 export let reset: boolean = false;
 
 
@@ -48,9 +50,34 @@ const defaultTheme = createTheme({
     fontFamily: schriftArt,
   },
 });
+function allTrue(): boolean{
+  let temp = 0;
+  voll.forEach((element, index) => {
+    if(element === true){
+      //console.log("element "+ element);
+      temp++;
+      //console.log("temp "+ temp);
+    }
+  });
+
+  if(temp == 7){
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+
 function isColumnFull(currentGamefield: any[], columnIndex: number): boolean {
+
   // Überprüfe, ob die oberste Zelle in der Spalte bereits belegt ist
-  return currentGamefield[0][columnIndex] !== ' ';
+  let istvoll = currentGamefield[0][columnIndex] !== ' ';
+
+  if(istvoll){
+    voll[columnIndex] = true;
+    //console.log("Spalte" + columnIndex + "ist voll!");
+  }
+  return istvoll;
 }
 
 function App() {
@@ -114,9 +141,12 @@ function App() {
   }
 
   function clearDraw(){
-    alert("Unentschieden, Spielfeld wird zurückgesetzt");
-    setGamefieldAndWinnerStatus();
+    setDialogTitle("Unentschieden!");
+    setOpen(true);
+    //alert("Unentschieden, Spielfeld wird zurückgesetzt");
     i = 0;
+    voll = [false, false, false, false, false, false, false];
+
   }
 
   const [isOpen, setOpen] = useState(false);
@@ -137,35 +167,46 @@ function App() {
     const newGamefield = [...gamefield];
 
     for (let i = gamefield.length - 1; i >= 0; i--) {
+
       if (newGamefield[i][colIndex] === ' ') {
+
         if (bot === false){
-        if (turn === true) {
-          newGamefield[i][colIndex] = 'X'; // 'X' für Spieler 1
-          turn = false;
-          break;
-        } else {
-          newGamefield[i][colIndex] = 'O'; // 'O' für Spieler 2
-          turn = true;
-          break;
+
+          if (turn === true){
+            newGamefield[i][colIndex] = 'X'; // 'X' für Spieler 1
+            turn = false;
+            break;
+          }
+
+          else {
+            newGamefield[i][colIndex] = 'O'; // 'O' für Spieler 2
+            turn = true;
+            break;
+          }
         }
-      }
-      else{
-        if (turn === true) {
-          newGamefield[i][colIndex] = 'X'; // 'X' für Spieler 1
-          turn = false;
-          checkWinner(newGamefield);
-          if(winnerstatus === false){
-          botMove();
-          break;
+        else{
+          if (turn === true) {
+            newGamefield[i][colIndex] = 'X'; // 'X' für Spieler 1
+            turn = false;
+            checkWinner(newGamefield);
+
+            if(winnerstatus === false){
+            botMove();
+            break;
+          }
+          }
         }
-        } 
-      }
       }
     }
-    if(!isColumnFull(newGamefield, colIndex)) {
 
-      i++;
-      console.log("i erhöht!" + i);
+    setGamefield(newGamefield);
+    checkWinner(newGamefield);
+
+    if(!isColumnFull(newGamefield, colIndex)) {
+      //console.log("Spalte nicht voll.");
+    }
+    else{
+      //console.log("Spalte voll!");
     }
 
     function checkWinner(gamefield: any): void {
@@ -363,20 +404,12 @@ function App() {
       }
     }
 
-    setGamefield(newGamefield);
-    checkWinner(newGamefield);
-
-    if (i === 35) {
-      clearDraw();
-    }
-
-
     if (winnerstatus === true) {
       /*setTimeout(() => {
         setGamefieldAndWinnerStatus();
       }, 5000);*/
     }
-    console.log(winnerstatus);
+    //console.log("Gewonnen "+ winnerstatus);
     function botMove(): void {
       const bestMove = findBestMove();
   
@@ -390,100 +423,103 @@ function App() {
       // Optionally, you may want to check for a winner after each move
       checkWinner(gamefield);
   }
-  
-  function findBestMove(): [number, number] | null {
-    const rows = gamefield.length;
-    const cols = gamefield[0].length;
-
-    // Check for winning move for 'O'
-    for (let col = 0; col < cols; col++) {
-        const row = getLowestEmptyRow(col);
-        if (row !== -1 && checkWinningMove(row, col, 'O')) {
-            return [row, col];
-        }
-    }
-
-    // Check for blocking opponent's winning move for 'X'
-    for (let col = 0; col < cols; col++) {
-        const row = getLowestEmptyRow(col);
-        if (row !== -1 && checkWinningMove(row, col, 'X')) {
-            return [row, col];
-        }
-    }
-
-    // If no winning or blocking move, make a random move
-    return makeRandomMove();
-}
-
-  
-  function checkWinningMove(row: number, col: number, symbol: string): boolean {
+    function findBestMove(): [number, number] | null {
       const rows = gamefield.length;
       const cols = gamefield[0].length;
-  
-      return (
-          checkConsecutive(row, col, 0, 1, symbol) || // Horizontal
-          checkConsecutive(row, col, 1, 0, symbol) || // Vertical
-          checkConsecutive(row, col, 1, 1, symbol) || // Diagonal \
-          checkConsecutive(row, col, 1, -1, symbol)   // Diagonal /
-      );
-  }
-  
-  function checkConsecutive(row: number, col: number, rowIncrement: number, colIncrement: number, symbol: string): boolean {
-      const consecutiveCount = 3; // Number of consecutive symbols needed to win
-  
-      for (let i = 1; i <= consecutiveCount; i++) {
-          const newRow = row + i * rowIncrement;
-          const newCol = col + i * colIncrement;
-  
-          if (
-              newRow < 0 || newRow >= gamefield.length ||
-              newCol < 0 || newCol >= gamefield[0].length ||
-              gamefield[newRow][newCol] !== symbol
-          ) {
-              return false;
+
+      // Check for winning move for 'O'
+      for (let col = 0; col < cols; col++) {
+          const row = getLowestEmptyRow(col);
+          if (row !== -1 && checkWinningMove(row, col, 'O')) {
+              return [row, col];
           }
       }
-  
-      return true;
-  }
-  
-  function makeRandomMove(): [number, number] | null {
-      const availableColumns = [];
-  
-      for (let j = 0; j < gamefield[0].length; j++) {
-          for (let i = gamefield.length - 1; i >= 0; i--) {
-              if (gamefield[i][j] === ' ') {
-                  availableColumns.push({ row: i, col: j });
-                  break;
-              }
+
+      // Check for blocking opponent's winning move for 'X'
+      for (let col = 0; col < cols; col++) {
+          const row = getLowestEmptyRow(col);
+          if (row !== -1 && checkWinningMove(row, col, 'X')) {
+              return [row, col];
           }
       }
-  
-      if (availableColumns.length === 0) {
-          // The board is full, handle accordingly (e.g., choose another column or end the game)
-          return null;
-      }
-  
-      const randomMove = availableColumns[Math.floor(Math.random() * availableColumns.length)];
-      placeCoin(randomMove.row, randomMove.col);
-      return [randomMove.row, randomMove.col];
+
+      // If no winning or blocking move, make a random move
+      return makeRandomMove();
   }
-  
-  function getLowestEmptyRow(col: number): number {
-      for (let i = gamefield.length - 1; i >= 0; i--) {
-          if (gamefield[i][col] === ' ') {
-              return i;
-          }
-      }
-      return -1; // Column is full, should not reach here if used correctly
-  }
-  
-  function placeCoin(row: number, col: number): void {
-      gamefield[row][col] = 'O';
-      turn = true;
-  }
-  
-  
+
+    function checkWinningMove(row: number, col: number, symbol: string): boolean {
+        const rows = gamefield.length;
+        const cols = gamefield[0].length;
+
+        return (
+            checkConsecutive(row, col, 0, 1, symbol) || // Horizontal
+            checkConsecutive(row, col, 1, 0, symbol) || // Vertical
+            checkConsecutive(row, col, 1, 1, symbol) || // Diagonal \
+            checkConsecutive(row, col, 1, -1, symbol)   // Diagonal /
+        );
+    }
+
+    function checkConsecutive(row: number, col: number, rowIncrement: number, colIncrement: number, symbol: string): boolean {
+        const consecutiveCount = 3; // Number of consecutive symbols needed to win
+
+        for (let i = 1; i <= consecutiveCount; i++) {
+            const newRow = row + i * rowIncrement;
+            const newCol = col + i * colIncrement;
+
+            if (
+                newRow < 0 || newRow >= gamefield.length ||
+                newCol < 0 || newCol >= gamefield[0].length ||
+                gamefield[newRow][newCol] !== symbol
+            ) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    function makeRandomMove(): [number, number] | null {
+        const availableColumns = [];
+
+        for (let j = 0; j < gamefield[0].length; j++) {
+            for (let i = gamefield.length - 1; i >= 0; i--) {
+                if (gamefield[i][j] === ' ') {
+                    availableColumns.push({ row: i, col: j });
+                    break;
+                }
+            }
+        }
+
+        if (availableColumns.length === 0) {
+            // The board is full, handle accordingly (e.g., choose another column or end the game)
+            return null;
+        }
+
+        const randomMove = availableColumns[Math.floor(Math.random() * availableColumns.length)];
+        placeCoin(randomMove.row, randomMove.col);
+        return [randomMove.row, randomMove.col];
+    }
+
+    function getLowestEmptyRow(col: number): number {
+        for (let i = gamefield.length - 1; i >= 0; i--) {
+            if (gamefield[i][col] === ' ') {
+                return i;
+            }
+        }
+        return -1; // Column is full, should not reach here if used correctly
+    }
+
+    function placeCoin(row: number, col: number): void {
+        gamefield[row][col] = 'O';
+        turn = true;
+    }
+
+    //console.log(voll);
+
+    if (allTrue() == true) {
+      //console.log("Alles Voll!" + allTrue());
+      clearDraw();
+    }
   }
 
   function renderButton(cell: string, colIndex: number, rowIndex: number) {

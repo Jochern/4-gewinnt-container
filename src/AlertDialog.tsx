@@ -32,10 +32,10 @@ export default function AlertDialog({visible, onClosed, onReset, title}: AlertDi
   },[visible])
 
   const startTimer = async () => {
-    console.log('found')
+    //console.log('found')
     for(let i = 10; i >= 0; i--) {
       if(reset === false){
-      console.log('found' + i)
+      //console.log('found' + i)
       await new Promise((resolve) => {
         setTimeout(resolve, 1000);
       });
