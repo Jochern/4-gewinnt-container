@@ -3,16 +3,12 @@ import Button from '@mui/material/Button';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box'
-import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Grid'
-import { AppBar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Toolbar, Typography } from '@mui/material';
+import { AppBar,Toolbar, Typography } from '@mui/material';
 import AlertDialog from './AlertDialog';
-import CheckIcon from '@mui/icons-material/Check';
 import MuiToggleButton from '@mui/material/ToggleButton';
 import SmartToyOutlinedIcon from '@mui/icons-material/SmartToyOutlined';
 import TextField from '@mui/material/TextField';
-
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Base:wght@700&display=swap"></link>
 
 let turn: boolean = true;
 let winnerstatus = false;
@@ -21,7 +17,7 @@ let voll: boolean[] = [false, false, false, false, false, false, false];
 
 export let reset: boolean = false;
 
-const ToggleButton = styled(MuiToggleButton)(({ theme }) => ({
+const ToggleButton = styled(MuiToggleButton)(({}) => ({
   "&.Mui-selected, &.Mui-selected:hover": {
     backgroundColor: "#ad264a",
   }
@@ -36,29 +32,24 @@ const defaultTheme = createTheme({
 });
 function allTrue(): boolean{
   let temp = 0;
-  voll.forEach((element, index) => {
-    if(element === true){
+  voll.forEach((element) => {
+    if(element){
       temp++;
     }
   });
 
-  if(temp == 7){
-    return true;
-  }
-  else {
-    return false;
-  }
+  return temp == 7;
 }
 
 function isColumnFull(currentGamefield: any[], columnIndex: number): boolean {
 
   // Überprüfe, ob die oberste Zelle in der Spalte bereits belegt ist
-  let istvoll = currentGamefield[0][columnIndex] !== ' ';
+  let istVoll = currentGamefield[0][columnIndex] !== ' ';
 
-  if(istvoll){
+  if(istVoll){
     voll[columnIndex] = true;
   }
-  return istvoll;
+  return istVoll;
 }
 
 function App() {
@@ -93,7 +84,7 @@ function App() {
   };
 
   function changeBotStatus(){
-    if(bot === true){
+    if(bot){
       bot = false;
       setPlayerTwo("Spieler 2"); // Setze den Namen von Spieler 2 auf "Spieler 2"
     }
@@ -221,9 +212,9 @@ function App() {
 
       if (newGamefield[i][colIndex] === ' ') {
 
-        if (bot === false){
+        if (!bot){
 
-          if (turn === true){
+          if (turn){
             newGamefield[i][colIndex] = 'X'; // 'X' für Spieler 1
             turn = false;
             break;
@@ -236,12 +227,12 @@ function App() {
           }
         }
         else{
-          if (turn === true) {
+          if (turn) {
             newGamefield[i][colIndex] = 'X'; // 'X' für Spieler 1
             turn = false;
             checkWinner(newGamefield);
 
-            if(winnerstatus === false){
+            if(!winnerstatus){
             botMove();
             break;
           }
@@ -254,7 +245,7 @@ function App() {
     checkWinner(newGamefield);
 
     function checkWinner(gamefield: any): void {
-      if (turn === false) {
+      if (!turn) {
         checkRowsX(gamefield);
         checkColumnsX(gamefield);
         checkDiagonalsX(gamefield);
@@ -263,8 +254,8 @@ function App() {
         checkColumnsO(gamefield);
         checkDiagonalsO(gamefield);
       }
-      if (winnerstatus === true) {
-        if (turn === true) {
+      if (winnerstatus) {
+        if (turn) {
           setPlayer2Stats(player2Stats + 1);
           setDialogTitle("O hat gewonnen");
         } else {
@@ -463,7 +454,7 @@ function App() {
       checkWinner(gamefield);
   }
     function findBestMove(): [number, number] | null {
-      const rows = gamefield.length;
+      //const rows = gamefield.length;
       const cols = gamefield[0].length;
 
       // Check for winning move for 'O'
@@ -487,8 +478,8 @@ function App() {
   }
 
     function checkWinningMove(row: number, col: number, symbol: string): boolean {
-        const rows = gamefield.length;
-        const cols = gamefield[0].length;
+        //const rows = gamefield.length;
+        //const cols = gamefield[0].length;
 
         return (
             checkConsecutive(row, col, 0, 1, symbol) || // Horizontal
@@ -553,11 +544,13 @@ function App() {
         turn = true;
     }
 
+    isColumnFull(gamefield,colIndex);
 
-    if (allTrue() == true) {
+    if (allTrue()) {
       clearDraw();
     }
     setActivePlayer(turn ? 1 : 2);
+
   }
 
   function renderButton(cell: string, colIndex: number, rowIndex: number) {
@@ -599,6 +592,9 @@ function App() {
   // Gesamtbreite des Spielbretts berechnen (7 Spalten im Spielbrett)
   const gameBoardWidth = `calc(11 * ${buttonWidth})`;
 
+
+
+  // noinspection XmlDeprecatedElement
   return (
 
     <ThemeProvider theme={defaultTheme}>
@@ -614,7 +610,7 @@ function App() {
           <Typography variant="h6" color="inherit" noWrap flex={1} style={{ fontFamily: schriftArt }}>
             {playerOne} Siege: {player1Stats}
           </Typography>
-        
+
           <Typography variant="h6" color="inherit" noWrap flex={1} style={{ fontFamily: schriftArt }}>
             {playerTwo} Siege: {player2Stats}
           </Typography>
@@ -678,7 +674,7 @@ function App() {
                   }}
                   onChange={handlePlayerOneChange}
                 />
-                
+
               )}
               <Typography variant="h6" style={{ background: activePlayer === 1 ? 'green' : 'transparent', padding: '10px', color: 'white', fontSize: windowDimensions.width > 480 ? '1rem' : '0.8rem', textAlign: 'center', borderRadius: '10px',}}>
                 {playerOne}
@@ -707,7 +703,7 @@ function App() {
                   }}
                   onChange={handlePlayerTwoChange}
                 />
-                
+
               )}
 
           <Typography variant="h6" style={{ background: activePlayer === 2 ? 'green' : 'transparent', padding: '10px', color: 'white', fontSize: windowDimensions.width > 480 ? '1rem' : '0.8rem', textAlign: 'center', borderRadius: '10px',}}>
